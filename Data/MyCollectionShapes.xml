@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<ArrayOfShapes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Shapes xsi:type="Lines">
+    <NameShape>Отрезок</NameShape>
+    <Info>Поочередно вводить координаты точек: (x1, y1); (x2, y2)</Info>
+  </Shapes>
+  <Shapes xsi:type="Triangle">
+    <NameShape>Треугольник</NameShape>
+    <Info>Поочередно вводить координаты точек: (x1, y1); (x2, y2); (x3, y3)</Info>
+  </Shapes>
+  <Shapes xsi:type="Ellipses">
+    <NameShape>Эллипс</NameShape>
+    <Info>Поочередно вводить координаты точек: (x1, y1); (x2, y2); (x3, y3)</Info>
+  </Shapes>
+  <Shapes xsi:type="Rectangles">
+    <NameShape>Прямоугольник</NameShape>
+    <Info>Поочередно вводить координаты точек: (x1, y1); (x2, y2); (x3, y3), (x4, y4), так, чтобы стороны в обязательном порядке образовывали прямой угол</Info>
+  </Shapes>
+  <Shapes xsi:type="Trapezium">
+    <NameShape>Трапеция</NameShape>
+    <Info>Поочередно вводить координаты точек: (xn, yn)</Info>
+  </Shapes>
+</ArrayOfShapes>

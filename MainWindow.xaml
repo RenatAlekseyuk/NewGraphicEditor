@@ -1,0 +1,20 @@
+﻿<Window x:Class="NewGraphicEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:NewGraphicEditor.ViewModels"
+        mc:Ignorable="d"
+        Title="Лабораторная №1 - Наследование и полиморфизм" 
+        Height="500" Width="700" 
+        WindowStartupLocation="CenterScreen" 
+        Background="#1E1E1E">
+
+    <Window.DataContext>
+        <vm:ApplicationMainClass/>
+    </Window.DataContext>
+
+    <Grid>
+        <Canvas x:Name="MyCanvas" Background="#1E1E1E"/>
+    </Grid>
+</Window>
