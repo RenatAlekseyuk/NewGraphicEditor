@@ -2,94 +2,229 @@
 using NewGraphicEditor.Data;
 using NewGraphicEditor.Models;
 using NewGraphicEditor.Models.ModelsShapes;
+using NewGraphicEditor.Service;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace NewGraphicEditor.ViewModels
 {
-    public class ApplicationMainClass
+    /// <summary>
+    /// Lab 2: Graphic Editor
+    /// - UI shape creation (ComboBox + Create button)
+    /// - No switch/if (using ShapeFactory with Dictionary)
+    /// - Shapes don't contain Draw method (separate drawers)
+    /// </summary>
+    public class ApplicationMainClass : INotifyPropertyChanged
     {
-        public ShapesCollection CollectionShapes { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
+
+        // Collections
+        public ShapesCollection CollectionShapes { get; set; }
+        public ObservableCollection<string> ShapeTypeNames { get; set; }
+
+        // Selected items
+        private Shapes _selectedShape;
+        public Shapes SelectedShape
+        {
+            get { return _selectedShape; }
+            set
+            {
+                _selectedShape = value;
+                OnPropertyChanged("SelectedShape");
+            }
+        }
+
+        private string _selectedShapeType;
+        public string SelectedShapeType
+        {
+            get { return _selectedShapeType; }
+            set
+            {
+                _selectedShapeType = value;
+                OnPropertyChanged("SelectedShapeType");
+            }
+        }
+
+        // Coordinates input
+        private int _inputX;
+        public int InputX
+        {
+            get { return _inputX; }
+            set
+            {
+                _inputX = value;
+                OnPropertyChanged("InputX");
+            }
+        }
+
+        private int _inputY;
+        public int InputY
+        {
+            get { return _inputY; }
+            set
+            {
+                _inputY = value;
+                OnPropertyChanged("InputY");
+            }
+        }
+
+        private int _currentPointIndex = 0;
+
+        // Commands
+        private ApplicationCommands _createShapeCommand;
+        private ApplicationCommands _addPointCommand;
+        private ApplicationCommands _drawAllShapesCommand;
+        private ApplicationCommands _deleteShapeCommand;
+
+        // Constructor
         public ApplicationMainClass()
         {
             CollectionShapes = new ShapesCollection();
-            AddSixDifferentShapes();
+            ShapeTypeNames = new ObservableCollection<string>(ShapeFactory.GetShapeNames());
+
+            if (ShapeTypeNames.Count > 0)
+                SelectedShapeType = ShapeTypeNames[0];
         }
 
-        private void AddSixDifferentShapes()
+        // ============ COMMANDS PROPERTIES ============
+
+        public ApplicationCommands CreateShapeCommand
         {
-            // 1. ОТРЕЗОК (Line)
-            var line = new Lines { NameShape = "Отрезок" };
-            line.point[0] = 50;
-            line.point[1] = 50;
-            line.point[2] = 200;
-            line.point[3] = 50;
-            CollectionShapes.Add(line);
-
-            // 2. ТРЕУГОЛЬНИК (Triangle)
-            var triangle = new Triangle { NameShape = "Треугольник" };
-            triangle.point[0] = 80;
-            triangle.point[1] = 120;
-            triangle.point[2] = 30;
-            triangle.point[3] = 190;
-            triangle.point[4] = 130;
-            triangle.point[5] = 190;
-            CollectionShapes.Add(triangle);
-
-            // 3. КРУГ (Circle) - отдельный класс!
-            var circle = new Circle { NameShape = "Круг" };
-            circle.point[0] = 300;
-            circle.point[1] = 80;   // центр
-            circle.point[2] = 350;
-            circle.point[3] = 80;   // радиус X
-            circle.point[4] = 300;
-            circle.point[5] = 130;  // радиус Y (равен радиусу X для круга)
-            CollectionShapes.Add(circle);
-
-            // 4. ЭЛЛИПС (Ellipse) - вытянутый
-            var ellipse = new Ellipses { NameShape = "Эллипс" };
-            ellipse.point[0] = 80;
-            ellipse.point[1] = 310;
-            ellipse.point[2] = 130;
-            ellipse.point[3] = 250;
-            ellipse.point[4] = 80;
-            ellipse.point[5] = 330;
-            CollectionShapes.Add(ellipse);
-
-            // 5. ПРЯМОУГОЛЬНИК (Rectangle)
-            var rectangle = new Rectangles { NameShape = "Прямоугольник" };
-            rectangle.point[0] = 200;
-            rectangle.point[1] = 240;  // верхний левый
-            rectangle.point[2] = 200;
-            rectangle.point[3] = 330;  // нижний левый
-            rectangle.point[4] = 350;
-            rectangle.point[5] = 240;  // верхний правый
-            CollectionShapes.Add(rectangle);
-
-            // 6. ПЯТИУГОЛЬНИК (ClientModel)
-            var pentagon = new ClientModel { NameShape = "Пятиугольник" };
-            pentagon.point[0] = 450;
-            pentagon.point[1] = 140;
-            pentagon.point[2] = 410;
-            pentagon.point[3] = 200;
-            pentagon.point[4] = 440;
-            pentagon.point[5] = 260;
-            pentagon.point[6] = 500;
-            pentagon.point[7] = 260;
-            pentagon.point[8] = 530;
-            pentagon.point[9] = 200;
-            CollectionShapes.Add(pentagon);
-        }
-
-        public void DrawAllShapes(Canvas canvas)
-        {
-            canvas.Children.Clear();
-
-            foreach (var shape in CollectionShapes)
+            get
             {
-                var drawer = DrawerFactory.GetDrawer(shape);
-                drawer?.Draw(canvas, shape);
+                if (_createShapeCommand == null)
+                {
+                    _createShapeCommand = new ApplicationCommands(obj =>
+                    {
+                        if (string.IsNullOrEmpty(SelectedShapeType)) return;
+
+                        Shapes newShape = ShapeFactory.Create(SelectedShapeType);
+                        newShape.NameShape = SelectedShapeType;
+                        newShape.Info = "Выберите " + (GetPointsCount(newShape) / 2) + " точек";
+
+                        CollectionShapes.Add(newShape);
+                        SelectedShape = newShape;
+
+                        MessageBox.Show("Создана фигура: " + SelectedShapeType, "Успех",
+                                       MessageBoxButton.OK, MessageBoxImage.Information);
+                    });
+                }
+                return _createShapeCommand;
             }
+        }
+
+        public ApplicationCommands AddPointCommand
+        {
+            get
+            {
+                if (_addPointCommand == null)
+                {
+                    _addPointCommand = new ApplicationCommands(obj =>
+                    {
+                        var canvas = obj as Canvas;
+                        if (canvas == null || SelectedShape == null) return;
+
+                        int needed = GetPointsCount(SelectedShape);
+
+                        if (_currentPointIndex < SelectedShape.point.Length)
+                        {
+                            SelectedShape.point[_currentPointIndex] = InputX;
+                            SelectedShape.point[_currentPointIndex + 1] = InputY;
+                            _currentPointIndex += 2;
+
+                            SelectedShape.Info = "Точка (" + InputX + "," + InputY + "). Осталось: " + ((needed - _currentPointIndex) / 2);
+
+                            if (_currentPointIndex >= needed)
+                            {
+                                var drawer = DrawerFactory.GetDrawer(SelectedShape);
+                                if (drawer != null)
+                                    drawer.Draw(canvas, SelectedShape);
+
+                                _currentPointIndex = 0;
+                                SelectedShape.Info = "Фигура готова!";
+                                InputX = 0;
+                                InputY = 0;
+
+                                // Redraw all shapes
+                                var drawCmd = DrawAllShapesCommand;
+                                if (drawCmd != null)
+                                    drawCmd.Execute(canvas);
+                            }
+                        }
+                    });
+                }
+                return _addPointCommand;
+            }
+        }
+
+        public ApplicationCommands DrawAllShapesCommand
+        {
+            get
+            {
+                if (_drawAllShapesCommand == null)
+                {
+                    _drawAllShapesCommand = new ApplicationCommands(obj =>
+                    {
+                        var canvas = obj as Canvas;
+                        if (canvas == null) return;
+
+                        canvas.Children.Clear();
+                        foreach (var shape in CollectionShapes)
+                        {
+                            var drawer = DrawerFactory.GetDrawer(shape);
+                            if (drawer != null)
+                                drawer.Draw(canvas, shape);
+                        }
+                    });
+                }
+                return _drawAllShapesCommand;
+            }
+        }
+
+        public ApplicationCommands DeleteShapeCommand
+        {
+            get
+            {
+                if (_deleteShapeCommand == null)
+                {
+                    _deleteShapeCommand = new ApplicationCommands(obj =>
+                    {
+                        if (SelectedShape != null)
+                        {
+                            CollectionShapes.RemoveNewShape(SelectedShape);
+                            if (CollectionShapes.ListShapes.Count > 0)
+                                SelectedShape = CollectionShapes.ListShapes[0];
+                            else
+                                SelectedShape = null;
+
+                            MessageBox.Show("Фигура удалена");
+                        }
+                    },
+                    obj => SelectedShape != null);
+                }
+                return _deleteShapeCommand;
+            }
+        }
+
+        // Helper: get required points count for shape
+        private int GetPointsCount(Shapes shape)
+        {
+            if (shape is Lines) return 4;
+            if (shape is Triangle) return 6;
+            if (shape is Circle) return 6;
+            if (shape is Ellipses) return 6;
+            if (shape is Rectangles) return 8;
+            if (shape is ClientModel) return 10;
+            return 6;
         }
     }
 }

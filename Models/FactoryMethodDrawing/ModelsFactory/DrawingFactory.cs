@@ -9,9 +9,8 @@ using System.Collections.Generic;
 namespace NewGraphicEditor.Models
 {
     /// <summary>
-    /// Factory for obtaining shape drawers
-    /// Factory Method pattern for polymorphic drawing
-    /// NO PLUGINS - pure Factory Pattern
+    /// Factory for getting shape drawers
+    /// No switch/if - uses Dictionary
     /// </summary>
     public static class DrawerFactory
     {
@@ -19,19 +18,21 @@ namespace NewGraphicEditor.Models
 
         static DrawerFactory()
         {
-            // Register all shape-drawer pairs (built-in only, no plugins)
-            _drawers[typeof(Lines)] = new LinesDrawer();
-            _drawers[typeof(Triangle)] = new TriangleDrawing();
-            _drawers[typeof(Ellipses)] = new EllipseDrawing();
-            _drawers[typeof(Circle)] = new CircleDrawing();
-            _drawers[typeof(Rectangles)] = new RectanglesDrawing();
-            _drawers[typeof(ClientModel)] = new ClientModelFactory();
+            // Register all shape-drawer pairs
+            _drawers.Add(typeof(Lines), new LinesDrawer());
+            _drawers.Add(typeof(Triangle), new TriangleDrawing());
+            _drawers.Add(typeof(Circle), new CircleDrawing());
+            _drawers.Add(typeof(Ellipses), new EllipseDrawing());
+            _drawers.Add(typeof(Rectangles), new RectanglesDrawing());
+            _drawers.Add(typeof(ClientModel), new ClientModelFactory());
         }
 
         public static IDrawableShape GetDrawer(Shapes shape)
         {
             if (shape == null)
-                throw new ArgumentNullException(nameof(shape));
+            {
+                throw new ArgumentNullException("shape");
+            }
 
             Type shapeType = shape.GetType();
 
@@ -40,7 +41,7 @@ namespace NewGraphicEditor.Models
                 return _drawers[shapeType];
             }
 
-            throw new ArgumentException($"Unknown shape type: {shapeType.Name}");
+            throw new ArgumentException("Unknown shape type: " + shapeType.Name);
         }
     }
 }

@@ -73,6 +73,7 @@
     <Compile Include="Models\ModelsShapes\Polygons.cs" />
     <Compile Include="Models\ModelsShapes\Rectangles.cs" />
     <Compile Include="Models\ModelsShapes\Triangle.cs" />
+    <Compile Include="Models\ShapeFactory.cs" />
     <Compile Include="Service\ApplicationCommands.cs" />
     <Compile Include="ViewModels\ApplicationMainClass.cs" />
     <Page Include="MainWindow.xaml">
