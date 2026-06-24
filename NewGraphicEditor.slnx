@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="../TrapeziumPlugin/TrapeziumPlugin.csproj" Id="eda75c7d-e307-4438-86b6-782a06bae812" />
   <Project Path="NewGraphicEditor.csproj" Id="4bef7d6d-dc48-465f-9b32-41e9f29efabd" />
 </Solution>
