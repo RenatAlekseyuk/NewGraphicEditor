@@ -76,6 +76,7 @@
 <<<<<<< HEAD
     <Compile Include="Models\PluginLoader.cs" />
     <Compile Include="Models\ShapeFactory.cs" />
+    <Compile Include="PluginInterfaces\IProcessingPlugin.cs" />
     <Compile Include="PluginInterfaces\IShapePlugin.cs" />
 =======
     <Compile Include="Models\ShapeFactory.cs" />

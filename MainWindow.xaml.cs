@@ -21,5 +21,10 @@ namespace NewGraphicEditor
                 vm.InputY = (int)pos.Y;
             }
         }
+
+        private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

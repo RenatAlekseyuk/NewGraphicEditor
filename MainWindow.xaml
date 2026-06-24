@@ -5,8 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:NewGraphicEditor.ViewModels"
         mc:Ignorable="d"
+<<<<<<< HEAD
+        Title="Лабораторная №5 - Плагины (XML↔JSON)" 
+        Height="600" Width="850" 
+=======
         Title="Лабораторная №2 - Графический редактор" 
         Height="550" Width="800" 
+>>>>>>> 683e583c3ceee9f6e3b773ef6686ebf8bfa86993
         WindowStartupLocation="CenterScreen" 
         Background="#1E1E1E">
 
@@ -14,17 +19,134 @@
         <vm:ApplicationMainClass/>
     </Window.DataContext>
 
+<<<<<<< HEAD
+    <Grid Margin="5">
+=======
     <Grid Margin="10">
+>>>>>>> 683e583c3ceee9f6e3b773ef6686ebf8bfa86993
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="280"/>
         </Grid.ColumnDefinitions>
 
+<<<<<<< HEAD
+        <!-- Область рисования -->
+=======
         <!-- ========== ЛЕВАЯ ПАНЕЛЬ - РИСОВАНИЕ (ТЁМНАЯ) ========== -->
+>>>>>>> 683e583c3ceee9f6e3b773ef6686ebf8bfa86993
         <Border Grid.Column="0" Background="#2D2D2D" BorderBrush="#555" BorderThickness="2" CornerRadius="5">
             <Canvas x:Name="MyCanvas" Background="#1E1E1E"/>
         </Border>
 
+<<<<<<< HEAD
+        <!-- Панель управления с прокруткой -->
+        <ScrollViewer Grid.Column="1" Margin="5,0,0,0">
+            <Border Background="#252526" BorderBrush="#555" BorderThickness="2" CornerRadius="5">
+                <StackPanel Margin="8">
+
+                    <TextBlock Text="ГРАФИЧЕСКИЙ РЕДАКТОР" FontSize="13" FontWeight="Bold"
+                               Foreground="#9CDCFE" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+
+                    <Rectangle Height="1" Fill="#3E3E42"/>
+
+                    <!-- Редактирование -->
+                    <TextBlock Text="Редактирование" FontWeight="Bold" Foreground="#CE9178" Margin="0,8,0,5"/>
+                    <TextBox Text="{Binding SelectedShapeName, UpdateSourceTrigger=PropertyChanged}" 
+                             Height="28" Background="#3E3E42" Foreground="White" BorderBrush="#555"/>
+
+                    <Rectangle Height="1" Fill="#3E3E42" Margin="0,8,0,5"/>
+
+                    <!-- Выбор типа фигуры -->
+                    <TextBlock Text="Создание" FontWeight="Bold" Foreground="#CE9178" Margin="0,5,0,5"/>
+                    <ComboBox ItemsSource="{Binding ShapeTypeNames}" SelectedItem="{Binding SelectedShapeType}"
+                              Height="28" Background="#3E3E42" Foreground="black" BorderBrush="#555"/>
+                    <Button Content="Создать фигуру" Command="{Binding CreateShapeCommand}"
+                            Background="#6A4E9B" Foreground="White" Height="30" FontWeight="Bold" Margin="0,5,0,5"/>
+
+                    <Rectangle Height="1" Fill="#3E3E42" Margin="0,5,0,5"/>
+
+                    <!-- Ввод координат -->
+                    <TextBlock Text="Ввод координат" FontWeight="Bold" Foreground="#CE9178"/>
+                    <Grid Margin="0,5,0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,3,0">
+                            <TextBlock Text="X:" Foreground="#9CDCFE" FontSize="11"/>
+                            <TextBox Text="{Binding InputX, UpdateSourceTrigger=PropertyChanged}" Height="28"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="3,0,0,0">
+                            <TextBlock Text="Y:" Foreground="#9CDCFE" FontSize="11"/>
+                            <TextBox Text="{Binding InputY, UpdateSourceTrigger=PropertyChanged}" Height="28"/>
+                        </StackPanel>
+                    </Grid>
+                    <Button Content="Добавить точку" Command="{Binding AddPointCommand}"
+                            CommandParameter="{Binding ElementName=MyCanvas}"
+                            Background="#0E639C" Foreground="White" Height="30" FontWeight="Bold" Margin="0,5,0,5"/>
+
+                    <Rectangle Height="1" Fill="#3E3E42"/>
+
+                    <!-- Список фигур -->
+                    <TextBlock Text="Список фигур" FontWeight="Bold" Foreground="#CE9178" Margin="0,5,0,5"/>
+                    <ListBox Height="100" ItemsSource="{Binding CollectionShapes.ListShapes}"
+                             SelectedItem="{Binding SelectedShape}" Background="#2D2D2D" BorderBrush="#555">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding NameShape}" Padding="3" Foreground="#E0E0E0"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <Grid Margin="0,5,0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Нарисовать все" Command="{Binding DrawAllShapesCommand}"
+                                CommandParameter="{Binding ElementName=MyCanvas}" Background="#007ACC" Foreground="White" Height="30" Margin="0,0,3,0"/>
+                        <Button Grid.Column="1" Content="Удалить" Command="{Binding DeleteShapeCommand}"
+                                Background="#D32F2F" Foreground="White" Height="30" Margin="3,0,0,0"/>
+                    </Grid>
+
+                    <Rectangle Height="1" Fill="#3E3E42"/>
+
+                    <!-- Плагин обработки -->
+                    <TextBlock Text="Плагин обработки" FontWeight="Bold" Foreground="#CE9178" Margin="0,5,0,5"/>
+                    <ComboBox ItemsSource="{Binding ProcessingPluginNames}" SelectedItem="{Binding SelectedProcessingPluginName}"
+                              Height="28" Background="#3E3E42" Foreground="Black" BorderBrush="#555" SelectionChanged="ComboBox_SelectionChanged"/>
+
+                    <Grid Margin="0,5,0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content= "Настройки" Command="{Binding ConfigurePluginCommand}" Background="#607D8B" Foreground="Black" Height="30" Margin="0,0,3,0"/>
+                        <Button Grid.Column="1" Content="Сохранить" Command="{Binding SaveCommand}" Background="#4CAF50" Foreground="White" Height="30" Margin="3,0,3,0"/>
+                        <Button Grid.Column="2" Content="Загрузить" Command="{Binding LoadCommand}" Background="#FF9800" Foreground="White" Height="30" Margin="3,0,0,0"/>
+                    </Grid>
+
+                    <Rectangle Height="1" Fill="#3E3E42"/>
+
+                    <!-- Информация -->
+                    <Border Background="#2D2D2D" CornerRadius="3" Padding="5" Margin="0,5,0,5" BorderBrush="#555" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="ℹ️ Информация" FontWeight="Bold" Foreground="#9CDCFE" FontSize="11"/>
+                            <TextBlock Text="{Binding SelectedShape.Info}" TextWrapping="Wrap" Foreground="#CCCCCC" FontSize="10"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Счётчик -->
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,5" HorizontalAlignment="Center">
+                        <TextBlock Text="Всего фигур: " FontSize="11" Foreground="#888"/>
+                        <TextBlock Text="{Binding CollectionShapes.ListShapes.Count}" FontSize="11" Foreground="#9CDCFE" FontWeight="Bold"/>
+                    </StackPanel>
+
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
+=======
         <!-- ========== ПРАВАЯ ПАНЕЛЬ - УПРАВЛЕНИЕ (ТЁМНАЯ) ========== -->
         <Border Grid.Column="1" Background="#252526" BorderBrush="#555" BorderThickness="2" CornerRadius="5" Margin="10,0,0,0">
             <StackPanel Margin="10">
@@ -38,26 +160,6 @@
 
                 <Rectangle Height="1" Fill="#3E3E42" Margin="0,0,0,15"/>
 
-<<<<<<< HEAD
-                <!-- ===== РЕДАКТИРОВАНИЕ НАЗВАНИЯ ===== -->
-                <TextBlock Text="Редактирование" 
-            FontWeight="Bold"
-            Foreground="white"
-            Margin="0,0,0,10"/>
-
-                <TextBlock Text="Название фигуры:" Foreground="#E0E0E0" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding SelectedShapeName, UpdateSourceTrigger=PropertyChanged}" 
-          Height="30"
-          Background="#3E3E42"
-          Foreground="White"
-          BorderBrush="#555"
-          CaretBrush="White"
-          Margin="0,0,0,15"/>
-
-                <Rectangle Height="1" Fill="#3E3E42" Margin="0,0,0,15"/>
-
-=======
->>>>>>> 683e583c3ceee9f6e3b773ef6686ebf8bfa86993
                 <!-- ===== 1. ВЫБОР ТИПА ФИГУРЫ ===== -->
                 <TextBlock Text="1. Выберите тип фигуры:" 
                            FontWeight="Bold"
@@ -176,44 +278,6 @@
                             Cursor="Hand"/>
                 </Grid>
 
-<<<<<<< HEAD
-                <Rectangle Height="1" Fill="#3E3E42" Margin="0,0,0,10"/>
-
-                <!-- ===== 4. НОВЫЕ КНОПКИ: XML СЕРИАЛИЗАЦИЯ ===== -->
-                <TextBlock Text="💾 СЕРИАЛИЗАЦИЯ (XML)" 
-                           FontWeight="Bold"
-                           Foreground="#CE9178"
-                           Margin="0,0,0,10"/>
-
-                <Grid Margin="0,0,0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Button Grid.Column="0" Content="💾 Сохранить в XML" 
-                            Command="{Binding SaveCommand}"
-                            Background="#4CAF50"
-                            Foreground="White"
-                            Height="35"
-                            Margin="0,0,5,0"
-                            FontWeight="Bold"
-                            Cursor="Hand"/>
-
-                    <Button Grid.Column="1" Content="📂 Загрузить из XML" 
-                            Command="{Binding LoadCommand}"
-                            Background="#FF9800"
-                            Foreground="White"
-                            Height="35"
-                            Margin="5,0,0,0"
-                            FontWeight="Bold"
-                            Cursor="Hand"/>
-                </Grid>
-
-                <Rectangle Height="1" Fill="#3E3E42" Margin="0,0,0,10"/>
-
-=======
->>>>>>> 683e583c3ceee9f6e3b773ef6686ebf8bfa86993
                 <!-- Информация -->
                 <Border Background="#2D2D2D" CornerRadius="3" Padding="8" Margin="0,5,0,0" BorderBrush="#555" BorderThickness="1">
                     <StackPanel>
@@ -234,5 +298,6 @@
 
             </StackPanel>
         </Border>
+>>>>>>> 683e583c3ceee9f6e3b773ef6686ebf8bfa86993
     </Grid>
 </Window>

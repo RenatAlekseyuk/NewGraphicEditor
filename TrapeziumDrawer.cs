@@ -13,28 +13,26 @@ namespace TrapeziumPlugin
         {
             if (shape is Trapezium trap)
             {
-                // Проверяем, что все координаты заданы (не нули)
-                bool hasAllPoints = true;
-                for (int i = 0; i < 8; i++)
-                {
-                    if (trap.point[i] == 0 && i > 0)
-                    {
-                        hasAllPoints = false;
-                        break;
-                    }
-                }
+                // Трапеция: 4 точки = 8 координат
+                // Точка 1: верхнее левое основание
+                // Точка 2: верхнее правое основание  
+                // Точка 3: нижнее правое основание
+                // Точка 4: нижнее левое основание
 
-                if (!hasAllPoints)
-                {
-                    System.Windows.MessageBox.Show("Трапеция: не все точки заданы!");
-                    return;
-                }
+                double x1 = trap.point[0];
+                double y1 = trap.point[1];
+                double x2 = trap.point[2];
+                double y2 = trap.point[3];
+                double x3 = trap.point[4];
+                double y3 = trap.point[5];
+                double x4 = trap.point[6];
+                double y4 = trap.point[7];
 
                 var points = new PointCollection();
-                points.Add(new Point(trap.point[0], trap.point[1])); // точка 1
-                points.Add(new Point(trap.point[2], trap.point[3])); // точка 2
-                points.Add(new Point(trap.point[4], trap.point[5])); // точка 3
-                points.Add(new Point(trap.point[6], trap.point[7])); // точка 4
+                points.Add(new Point(x1, y1)); // верхняя левая
+                points.Add(new Point(x2, y2)); // верхняя правая
+                points.Add(new Point(x3, y3)); // нижняя правая
+                points.Add(new Point(x4, y4)); // нижняя левая
 
                 var polygon = new Polygon
                 {
@@ -44,7 +42,26 @@ namespace TrapeziumPlugin
                     Fill = Brushes.Lavender
                 };
                 canvas.Children.Add(polygon);
+
+                // Рисуем точки для наглядности
+                DrawPoint(canvas, x1, y1, Brushes.Red);
+                DrawPoint(canvas, x2, y2, Brushes.Red);
+                DrawPoint(canvas, x3, y3, Brushes.Red);
+                DrawPoint(canvas, x4, y4, Brushes.Red);
             }
+        }
+
+        private void DrawPoint(Canvas canvas, double x, double y, Brush color)
+        {
+            var point = new Ellipse
+            {
+                Width = 5,
+                Height = 5,
+                Fill = color
+            };
+            Canvas.SetLeft(point, x - 2.5);
+            Canvas.SetTop(point, y - 2.5);
+            canvas.Children.Add(point);
         }
     }
 }
