@@ -56,7 +56,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Adapters\RhombusAdapter.cs" />
     <Compile Include="Controls\DrawableShape.cs" />
+    <Compile Include="Drawing\RhombusDrawer.cs" />
     <Compile Include="Models\FactoryMethodDrawing\ModelsFactory\ClientModelFactory.cs" />
     <Compile Include="Models\FactoryMethodDrawing\ModelsFactory\DrawingFactory.cs" />
     <Compile Include="Models\FactoryMethodDrawing\ModelsFactory\EllipseDrawing.cs" />
@@ -73,15 +75,12 @@
     <Compile Include="Models\ModelsShapes\Polygons.cs" />
     <Compile Include="Models\ModelsShapes\Rectangles.cs" />
     <Compile Include="Models\ModelsShapes\Triangle.cs" />
-<<<<<<< HEAD
     <Compile Include="Models\PluginLoader.cs" />
     <Compile Include="Models\ShapeFactory.cs" />
     <Compile Include="PluginInterfaces\IProcessingPlugin.cs" />
     <Compile Include="PluginInterfaces\IShapePlugin.cs" />
-=======
-    <Compile Include="Models\ShapeFactory.cs" />
->>>>>>> 683e583c3ceee9f6e3b773ef6686ebf8bfa86993
     <Compile Include="Service\ApplicationCommands.cs" />
+    <Compile Include="Service\ForeignPluginLoader.cs" />
     <Compile Include="Service\XmlSerializationService.cs" />
     <Compile Include="ViewModels\ApplicationMainClass.cs" />
     <Page Include="MainWindow.xaml">
